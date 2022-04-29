@@ -1,11 +1,29 @@
-const { addQuestion,saveContact } = require('./contacts')
+const yargs = require('yargs')
+const { saveContact } = require('./contacts')
 
-const addData = async () => {
-  const name = await addQuestion("Name: ")
-  const email = await addQuestion("Email: ")
-  const phone = await addQuestion("Phone: ")
+yargs.command({
+  command: 'add',
+  desc: 'New Contact',
+  builder: {
+    name: {
+      describe: 'Fullname',
+      demandOption: true,
+      type: 'string'
+    },
+    email: {
+      describe: 'Email',
+      demandOption: true,
+      type: 'string'
+    },
+    phone: {
+      describe: 'Phone',
+      demandOption: true,
+      type: 'string'
+    },
+  },
+  handler(argv){
+    saveContact(argv.name,argv.email,argv.phone)
+  }
+})
 
-  saveContact(name,email,phone)
-}
-
-addData()
+yargs.parse()
